@@ -1,0 +1,127 @@
+---
+volumes:
+  cache:
+  jellyfin:
+  jellyseerr:
+  radarr:
+  sonarr:
+  bazarr:
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    user: 1000:1000
+    group_add:
+      - "109" # 109 is the id of the 'render' group on my host, used to enable hardware acceleration
+    ports:
+      - '8096:8096'
+    volumes:
+      - jellyfin:/config
+      - cache:/cache
+      - /data:/media:ro
+    environment:
+      - TZ=Europe/Madrid
+    restart: 'unless-stopped'
+    # Optional - alternative address used for autodiscovery
+    # environment:
+      # - JELLYFIN_PublishedServerUrl=http://${HOST}
+    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+    dns:
+      - 10.80.0.2
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    healthcheck:
+      test: curl -sS http://127.0.0.1:8096 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    devices:
+      - /dev/dri:/dev/dri
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      # - LOG_LEVEL=debug
+      - TZ=Europe/Madrid
+      # - PORT=5055 #optional
+    ports:
+      - '8097:5055'
+    volumes:
+      - jellyseerr:/app/config
+    dns:
+      - 10.80.0.2
+    restart: unless-stopped
+    # healthcheck:
+    #   test: curl -sS http://127.0.0.1:5055 || exit 1
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+
+  sonarr:
+    restart: unless-stopped
+    container_name: sonarr
+    image: ghcr.io/hotio/sonarr
+    ports:
+      - "8099:8989"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Europe/Madrid
+    volumes:
+      - sonarr:/config
+      - /data:/data
+    dns:
+      - 10.80.0.2
+    healthcheck:
+      test: curl -sS http://127.0.0.1:8989 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  radarr:
+    restart: unless-stopped
+    container_name: radarr
+    image: ghcr.io/hotio/radarr
+    ports:
+      - "8098:7878"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Europe/Madrid
+    volumes:
+      - radarr:/config
+      - /data:/data
+    dns:
+      - 10.80.0.2
+    healthcheck:
+      test: curl -sS http://127.0.0.1:7878 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
+  bazarr:
+    restart: unless-stopped
+    container_name: bazarr
+    image: ghcr.io/hotio/bazarr
+    ports:
+      - "8094:6767"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Europe/Madrid
+      - WEBUI_PORTS=6767/tcp,6767/udp
+    volumes:
+      - bazarr:/config
+      - /data:/data
+    dns:
+      - 10.80.0.2
+    healthcheck:
+      test: curl -sS http://127.0.0.1:6767 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
