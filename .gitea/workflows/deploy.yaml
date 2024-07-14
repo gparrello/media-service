@@ -10,5 +10,6 @@ on:
 jobs:
   Deploy:
     runs-on: ubuntu-latest
+    steps:
       - name: Trigger Webhook
         run: curl -X POST ${{ vars.DEPLOY_WEBHOOK }}
