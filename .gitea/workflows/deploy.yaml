@@ -11,5 +11,4 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
       - name: Trigger Webhook
-        run: |
-          curl -X POST ${{ vars.DEPLOY_WEBHOOK }}
+        run: curl -X POST ${{ vars.DEPLOY_WEBHOOK }}
