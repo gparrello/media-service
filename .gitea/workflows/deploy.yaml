@@ -1,0 +1,15 @@
+name: Trigger Deploy Webhook
+run-name: ${{ github.actor }} deploys service
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'service/**'
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+      - name: Trigger Webhook
+        run: |
+          curl -X POST ${{ vars.DEPLOY_WEBHOOK }}
