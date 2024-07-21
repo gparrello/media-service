@@ -44,8 +44,8 @@ services:
     devices:
       - /dev/dri:/dev/dri
     networks:
-      - ingress
       - default
+      - ingress
     labels:
       caddy: media.karpincho.duckdns.org
       caddy.reverse_proxy: "{{upstreams 8096}}"
@@ -54,9 +54,7 @@ services:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
     environment:
-      # - LOG_LEVEL=debug
       - TZ=Europe/Madrid
-      # - PORT=5055 #optional
     ports:
       - '8097:5055'
     volumes:
@@ -65,6 +63,10 @@ services:
       - 10.80.0.2
     networks:
       - default
+      - ingress
+    labels:
+      caddy: media-requests.karpincho.duckdns.org
+      caddy.reverse_proxy: "{{upstreams 5055}}"
     restart: unless-stopped
     # healthcheck:
     #   test: curl -sS http://127.0.0.1:5055 || exit 1
