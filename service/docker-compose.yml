@@ -45,7 +45,7 @@ services:
       - /dev/dri:/dev/dri
     networks:
       - reverse-proxy_caddy
-      - media-service_default
+      - default
     labels:
       caddy: jellyfin.gparrello.duckdns.org
       caddy.reverse_proxy: "{{upstreams 8096}}"
@@ -64,7 +64,7 @@ services:
     dns:
       - 10.80.0.2
     networks:
-      - media-service_default
+      - default
     restart: unless-stopped
     # healthcheck:
     #   test: curl -sS http://127.0.0.1:5055 || exit 1
@@ -89,7 +89,7 @@ services:
     dns:
       - 10.80.0.2
     networks:
-      - media-service_default
+      - default
     healthcheck:
       test: curl -sS http://127.0.0.1:8989 || exit 1
       interval: 30s
@@ -113,7 +113,7 @@ services:
     dns:
       - 10.80.0.2
     networks:
-      - media-service_default
+      - default
     healthcheck:
       test: curl -sS http://127.0.0.1:7878 || exit 1
       interval: 30s
@@ -138,7 +138,7 @@ services:
     dns:
       - 10.80.0.2
     networks:
-      - media-service_default
+      - default
     healthcheck:
       test: curl -sS http://127.0.0.1:6767 || exit 1
       interval: 30s
