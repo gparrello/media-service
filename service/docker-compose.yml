@@ -1,7 +1,7 @@
 ---
 networks:
   default:
-  reverse-proxy_caddy:
+  ingress:
     external: true
 
 volumes:
@@ -44,10 +44,10 @@ services:
     devices:
       - /dev/dri:/dev/dri
     networks:
-      - reverse-proxy_caddy
+      - ingress
       - default
     labels:
-      caddy: jellyfin.gparrello.duckdns.org
+      caddy: media.karpincho.duckdns.org
       caddy.reverse_proxy: "{{upstreams 8096}}"
 
   jellyseerr:
