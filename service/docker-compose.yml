@@ -149,7 +149,7 @@ services:
       retries: 3
   
   xteve:
-    image: 'dnsforge/xteve:latest'
+    image: dnsforge/xteve:latest
     volumes:
       - xteve:/home/xteve/conf
     restart: unless-stopped
