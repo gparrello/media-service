@@ -11,6 +11,7 @@ volumes:
   radarr:
   sonarr:
   bazarr:
+  xteve:
 
 services:
   jellyfin:
@@ -146,3 +147,20 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+  
+  xteve:
+    image: 'dnsforge/xteve:latest'
+    volumes:
+      - xteve:/home/xteve/conf
+    restart: unless-stopped
+    ports:
+      - 34400:34400
+      - 34480:8080
+    dns:
+      - 10.80.0.2
+    container_name: xteve
+    tty: true
+    stdin_open: true
+    environment:
+      - TZ=Europe/Madrid
+
