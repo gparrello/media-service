@@ -163,4 +163,5 @@ services:
     stdin_open: true
     environment:
       - TZ=Europe/Madrid
+      - XTEVE_PORT=8080
 
