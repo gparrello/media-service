@@ -11,7 +11,8 @@ volumes:
   radarr:
   sonarr:
   bazarr:
-  xteve:
+  threadfin:
+  tmp:
   webgrabplus:
   epg:
 
@@ -149,22 +150,20 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-  
-  xteve:
-    image: dnsforge/xteve:latest
-    volumes:
-      - xteve:/home/xteve/conf
-      - epg:/data
-    restart: unless-stopped
+
+  threadfin:
+    image: fyb3roptik/threadfin
+    container_name: threadfin
     ports:
       - 34400:34400
-    dns:
-      - 10.80.0.2
-    container_name: xteve
-    tty: true
-    stdin_open: true
     environment:
+      - PUID=1001
+      - PGID=1001
       - TZ=Europe/Madrid
+    volumes:
+      - threadfin:/home/threadfin/conf
+      - tmp:/tmp/threadfin:rw
+    restart: unless-stopped
 
   webgrabplus:
     image: lscr.io/linuxserver/webgrabplus:latest
