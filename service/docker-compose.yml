@@ -12,6 +12,8 @@ volumes:
   sonarr:
   bazarr:
   xteve:
+  webgrabplus:
+  epg:
 
 services:
   jellyfin:
@@ -152,6 +154,7 @@ services:
     image: dnsforge/xteve:latest
     volumes:
       - xteve:/home/xteve/conf
+      - epg:/data
     restart: unless-stopped
     ports:
       - 34400:34400
@@ -162,4 +165,20 @@ services:
     stdin_open: true
     environment:
       - TZ=Europe/Madrid
+
+  webgrabplus:
+    image: lscr.io/linuxserver/webgrabplus:latest
+    container_name: webgrabplus
+    hostname: webgrabplus
+    mac_address: 00:00:00:00:00:00
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - webgrabplus-config:/config
+      - epg:/data
+    restart: unless-stopped
+    dns:
+      - 10.80.0.2
 
