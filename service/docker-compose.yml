@@ -162,4 +162,9 @@ services:
       - threadfin:/home/threadfin/conf
       - tmp:/tmp/threadfin:rw
     restart: unless-stopped
+    healthcheck:
+      test: curl -sS http://127.0.0.1:34400/web || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
