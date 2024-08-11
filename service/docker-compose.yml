@@ -13,8 +13,6 @@ volumes:
   bazarr:
   threadfin:
   tmp:
-  webgrabplus:
-  epg:
 
 services:
   jellyfin:
@@ -164,20 +162,4 @@ services:
       - threadfin:/home/threadfin/conf
       - tmp:/tmp/threadfin:rw
     restart: unless-stopped
-
-  webgrabplus:
-    image: lscr.io/linuxserver/webgrabplus:latest
-    container_name: webgrabplus
-    hostname: webgrabplus
-    mac_address: 00:00:00:00:00:00
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Madrid
-    volumes:
-      - webgrabplus-config:/config
-      - epg:/data
-    restart: unless-stopped
-    dns:
-      - 10.80.0.2
 
