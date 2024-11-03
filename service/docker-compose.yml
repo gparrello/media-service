@@ -26,7 +26,7 @@ services:
     volumes:
       - jellyfin:/config
       - cache:/cache
-      - /data:/media:ro
+      - /data:/media
     environment:
       - TZ=Europe/Madrid
     restart: 'unless-stopped'
